@@ -8,7 +8,6 @@ onSubmit: (value: string) => void;
 export default function SearchBar({onSubmit}: SearchBarProps) {
  const handleSubmit = (formData: FormData) => {
   const formValue = formData.get ('query') as string;
-  console.log("formValue:", formValue);
 
   // перевірка, якщо при сабміті пустий інпут 
   if(formValue === '') {
