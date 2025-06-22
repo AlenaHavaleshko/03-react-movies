@@ -15,44 +15,43 @@ export default function App() {
   // 2. Додаємо стан індикотора загрузки
   const [isLoading, setIsLoading] = useState(false);
   // Додаємо стан isError
-  const [isError, setIsError] = useState (false);
-// Модал
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null >(null);
+  const [isError, setIsError] = useState(false);
+  // Модал
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const handleSubmit = async (searchValue: string) => {
     setMovies([]); // щчищуємо попередні фільми після пового запиту
     // 2. змінюємо індикатор на true перед запитом
     setIsLoading(true);
-    setIsError (false);
+    setIsError(false);
 
     try {
       const fetchedMovies = await fetchMovies(searchValue);
       if (fetchedMovies.length === 0) {
-        toast.error("No movies found for your request.");   
+        toast.error("No movies found for your request.");
       }
       // 3. Меняем индикатор на false после запроса
       setMovies(fetchedMovies);
     } catch (error: unknown) {
       if (error instanceof Error) {
-      toast.error(`Error fetching movies: ${error.message}`);
-    } else {
-      toast.error("Error fetching movies.");
-    }
-    setIsError(true);
+        toast.error(`Error fetching movies: ${error.message}`);
+      } else {
+        toast.error("Error fetching movies.");
+      }
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleSelect = (movie: Movie) => {
-    if (!movie) return;    // захист від некоректних даних
+    if (!movie) return; // захист від некоректних даних
     setSelectedMovie(movie);
-
   };
-  
- const closeModal = () => {
-  setSelectedMovie(null);
-};
+
+  const closeModal = () => {
+    setSelectedMovie(null);
+  };
 
   return (
     <>
@@ -67,7 +66,7 @@ export default function App() {
           )
         )}
         {selectedMovie && (
-        <MovieModal movie={selectedMovie} onClose={closeModal} />
+          <MovieModal movie={selectedMovie} onClose={closeModal} />
         )}
         {isError && <ErrorMessage />}
       </div>

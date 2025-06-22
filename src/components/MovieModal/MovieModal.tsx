@@ -1,15 +1,61 @@
+import { useEffect } from "react";
 import css from "./MovieModal.module.css";
 import type { Movie } from "../../types/movie";
+import { createPortal } from "react-dom";
 
 interface MovieModalProps {
   movie: Movie;
   onClose: () => void;
 }
-
+// закриття по бекдропу
 export default function MovieModal({ movie, onClose }: MovieModalProps) {
-  return (
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
+
+  // закриття по escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
+  // заборона прокрутки фону
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    // очищення при закриті
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = ""; // повертаємо прокрутку
+    };
+  }, [onClose]);
+
+  return createPortal(
     <>
-      <div className={css.backdrop} role="dialog" aria-modal="true">
+      <div
+        className={css.backdrop}
+        onClick={handleBackdropClick}
+        role="dialog"
+        aria-modal="true"
+      >
         <div className={css.modal}>
           <button
             className={css.closeButton}
@@ -36,6 +82,7 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
           </div>
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }

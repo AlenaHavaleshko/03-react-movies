@@ -1,23 +1,23 @@
-import css from './SearchBar.module.css';
-import toast from 'react-hot-toast';
+import css from "./SearchBar.module.css";
+import toast from "react-hot-toast";
 
 interface SearchBarProps {
-onSubmit: (value: string) => void;
+  onSubmit: (value: string) => void;
 }
 
-export default function SearchBar({onSubmit}: SearchBarProps) {
- const handleSubmit = (formData: FormData) => {
-  const formValue = formData.get ('query') as string;
+export default function SearchBar({ onSubmit }: SearchBarProps) {
+  const handleSubmit = (formData: FormData) => {
+    const formValue = formData.get("query") as string;
 
-  // перевірка, якщо при сабміті пустий інпут 
-  if(formValue === '') {
-       toast.error('Please enter your search query.');
-       return;
+    // перевірка, якщо при сабміті пустий інпут
+    if (formValue === "") {
+      toast.error("Please enter your search query.");
+      return;
     }
     onSubmit(formValue);
- }
+  };
 
- return (
+  return (
     <>
       <header className={css.header}>
         <div className={css.container}>
