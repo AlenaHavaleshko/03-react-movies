@@ -24,27 +24,11 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
     };
 
     document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";                  // заборона прокрутки фону
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [onClose]);
-
-  // заборона прокрутки фону
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
-
-    // очищення при закриті
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = ""; // повертаємо прокрутку
+      document.removeEventListener("keydown", handleKeyDown); // очищення при закриті
+      document.body.style.overflow = "";                      // повертаємо прокрутку
     };
   }, [onClose]);
 
